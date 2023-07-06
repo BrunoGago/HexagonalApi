@@ -2,6 +2,7 @@ package com.brunogago.hexagonal.configs;
 
 import com.brunogago.hexagonal.adapters.outbound.FindAddressByZipCodeAdapter;
 import com.brunogago.hexagonal.adapters.outbound.InsertCustomerAdapter;
+import com.brunogago.hexagonal.adapters.outbound.SendCpfForValidationAdapter;
 import com.brunogago.hexagonal.application.core.services.InsertCustomerService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,9 +14,10 @@ public class InsertCustomerConfig {
     @Bean
     public InsertCustomerService insertCustomerService(
             FindAddressByZipCodeAdapter findAddressByZipCodeAdapter,
-            InsertCustomerAdapter insertCustomerAdapter
+            InsertCustomerAdapter insertCustomerAdapter,
+            SendCpfForValidationAdapter sendCpfForValidationAdapter
     ){
-        return new InsertCustomerService(findAddressByZipCodeAdapter, insertCustomerAdapter);
+        return new InsertCustomerService(findAddressByZipCodeAdapter, insertCustomerAdapter, sendCpfForValidationAdapter);
     }
 
 }
