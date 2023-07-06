@@ -1,18 +1,18 @@
-package com.brunogago.hexagonal.application.core.usecases;
+package com.brunogago.hexagonal.application.core.services;
 
 import com.brunogago.hexagonal.application.core.domain.Customer;
 import com.brunogago.hexagonal.application.ports.inbound.InsertCustomerInputPort;
 import com.brunogago.hexagonal.application.ports.outbound.FindAddressByZipCodeOutputPort;
 import com.brunogago.hexagonal.application.ports.outbound.InsertCustomerOutputPort;
 
-public class InsertCustomerUseCase implements InsertCustomerInputPort {
+public class InsertCustomerService implements InsertCustomerInputPort {
 
     private final FindAddressByZipCodeOutputPort findAddressByZipCodeOutputPort;
 
     private final InsertCustomerOutputPort insertCustomerOutputPort;
 
 
-    public InsertCustomerUseCase(FindAddressByZipCodeOutputPort findAddressByZipCodeOutputPort,
+    public InsertCustomerService(FindAddressByZipCodeOutputPort findAddressByZipCodeOutputPort,
                                  InsertCustomerOutputPort insertCustomerOutputPort) {
         this.findAddressByZipCodeOutputPort = findAddressByZipCodeOutputPort;
         this.insertCustomerOutputPort = insertCustomerOutputPort;
