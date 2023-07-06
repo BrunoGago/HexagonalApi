@@ -3,8 +3,10 @@ package com.brunogago.hexagonal.adapters.inbound.controllers;
 import com.brunogago.hexagonal.adapters.inbound.controllers.mappers.CustomerMapper;
 import com.brunogago.hexagonal.adapters.inbound.controllers.request.CustomerRequest;
 import com.brunogago.hexagonal.adapters.inbound.controllers.response.CustomerResponse;
+import com.brunogago.hexagonal.application.core.domain.Customer;
 import com.brunogago.hexagonal.application.ports.inbound.FindCustomerByIdInputPort;
 import com.brunogago.hexagonal.application.ports.inbound.InsertCustomerInputPort;
+import com.brunogago.hexagonal.application.ports.inbound.UpdateCustomerInputPort;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +26,9 @@ public class CustomerController {
     @Autowired
     private FindCustomerByIdInputPort findCustomerByIdInputPort;
 
+    @Autowired
+    private UpdateCustomerInputPort updateCustomerInputPort;
+
     @PostMapping
     public ResponseEntity<Void> insert(@Valid @RequestBody CustomerRequest customerRequest){
         var customer = customerMapper.toCustomerDomain(customerRequest);
@@ -36,6 +41,16 @@ public class CustomerController {
         var customer = findCustomerByIdInputPort.find(id);
         var customerResponse = customerMapper.toCostumerResponse(customer);
         return ResponseEntity.status(HttpStatus.OK).body(customerResponse);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@PathVariable final String id,
+                                       @Valid @RequestBody CustomerRequest customerRequest){
+        Customer customer = customerMapper.toCustomerDomain(customerRequest);
+        customer.setId(id);
+        updateCustomerInputPort.update(customer, customerRequest.getZipCode());
+        return ResponseEntity.noContent().build();
+
     }
 
 
