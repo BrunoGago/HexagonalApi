@@ -4,6 +4,8 @@ import com.brunogago.hexagonal.adapters.inbound.controllers.mappers.CustomerMapp
 import com.brunogago.hexagonal.adapters.inbound.controllers.request.CustomerRequest;
 import com.brunogago.hexagonal.adapters.inbound.controllers.response.CustomerResponse;
 import com.brunogago.hexagonal.application.core.domain.Customer;
+import com.brunogago.hexagonal.application.core.services.DeleteCustomerByIdService;
+import com.brunogago.hexagonal.application.ports.inbound.DeleteCustomerByIdInputPort;
 import com.brunogago.hexagonal.application.ports.inbound.FindCustomerByIdInputPort;
 import com.brunogago.hexagonal.application.ports.inbound.InsertCustomerInputPort;
 import com.brunogago.hexagonal.application.ports.inbound.UpdateCustomerInputPort;
@@ -29,6 +31,9 @@ public class CustomerController {
     @Autowired
     private UpdateCustomerInputPort updateCustomerInputPort;
 
+    @Autowired
+    private DeleteCustomerByIdInputPort deleteCustomerByIdInputPort;
+
     @PostMapping
     public ResponseEntity<Void> insert(@Valid @RequestBody CustomerRequest customerRequest){
         var customer = customerMapper.toCustomerDomain(customerRequest);
@@ -50,7 +55,12 @@ public class CustomerController {
         customer.setId(id);
         updateCustomerInputPort.update(customer, customerRequest.getZipCode());
         return ResponseEntity.noContent().build();
+    }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable final String id){
+        deleteCustomerByIdInputPort.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 
